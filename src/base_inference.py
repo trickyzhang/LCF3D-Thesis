@@ -25,6 +25,7 @@ from mmdet3d.models.layers import box3d_multiclass_nms, nms_bev
 from mmengine.structures import InstanceData
 from mmengine.config import Config
 from ultralytics import YOLO
+from config_utils import image_score_thresholds
 
 
 class BaseLateFusionInferencer(ABC):
@@ -55,7 +56,8 @@ class BaseLateFusionInferencer(ABC):
         # Extract 2D detector configuration
         self.detector2d_cfg = late_fusion_cfg.get('detector2d', {})
         self.model_type = self.detector2d_cfg.get('model_type', 'mmdet')
-        self.score_thr_2d = torch.tensor(self.detector2d_cfg.get('score_thr', [0.5] * 10), device=device)
+        # Thresholds are indexed AFTER remapping into the unified class space.
+        self.score_thr_2d = torch.tensor(image_score_thresholds(late_fusion_cfg), device=device)
         self.valid_2d_classes = torch.tensor(self.detector2d_cfg.get('valid_2d_classes', list(range(10))), device=device)
         self.img_label_mapping = torch.tensor(self.detector2d_cfg.get('img_label_mapping', list(range(10))), device=device)
         

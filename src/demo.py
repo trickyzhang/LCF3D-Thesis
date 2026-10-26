@@ -36,7 +36,7 @@ if __name__ == '__main__':
     )
     
     calibration_data = read_kitti_calibration_data(args.calib_path)
-    calibration_data = calibration_to_torch(calibration_data, device='cuda:0')
+    calibration_data = calibration_to_torch(calibration_data, device=args.device)
     lidar_to_cam = calibration_data['R0_rect'] @ calibration_data['Tr_velo_to_cam']
     cam_to_img_left = calibration_data['P2']
     cam_to_img_right = calibration_data['P3']
