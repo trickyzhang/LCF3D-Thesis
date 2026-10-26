@@ -28,3 +28,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+# Thesis adapter generated data
+thesis_outputs/
+thesis_weights/
+__pycache__/
